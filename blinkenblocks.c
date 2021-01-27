@@ -1,5 +1,10 @@
 /*
  * Silly hack to visualise I/O concurrency, just for fun.
+ * Filters the output of Linux btrace, and perhaps later also FreeBSD/macOS
+ * dtrace.
+ *
+ * XXX Has bugs that leak (never complete) I/Os on super busy/deep systems;
+ * maybe btrace reports completions before submissions sometimes?
  */
 
 #include <stdbool.h>
@@ -110,6 +115,8 @@ parse_btrace_line(io_state *state, char *line)
 	io_id io;
 
 	/* Yeah, this should be a regex. */
+	while (line[i] == ' ')
+		++i;
 	while (i < len) {
 		if (field == 5) {
 			/* Action field */
