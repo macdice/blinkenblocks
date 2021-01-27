@@ -70,7 +70,8 @@ display_complete(io_state *state, io_id *io, char rw, size_t blocks)
 		if (strcmp(state->ids[i].tag, io->tag) == 0) {
 			/* Found it. */
 			state->ids[i].tag[0] = 0;
-			printf("%16s <", state->ids[i].program);
+			printf("%16s %s", state->ids[i].program,
+				   state->unicode ? "◀" : "<");
 			fputs(state->unicode ? "─" : "-", stdout);
 			for (size_t j = 0; j < state->size; ++j) {
 				if (j <  i) {
